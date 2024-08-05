@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [render, setrender] = useState<boolean>(false);
   const [showaddtodo, setshowaddtodo] = useState<boolean>(false);
+  const [title , settitle] = useState<string| ''>('')
+  const [description , setdescription] = useState<string| ''>('')
+  const [persona , setpersona] = useState<string| ''>('')
+  const [group , setgroup] = useState<number>(NaN)
 
   useEffect(() => {
     initializeTasks()
@@ -22,23 +26,25 @@ export default function Home() {
     setrender(prev=>!prev);
   },[])
 
-  const handleAddTodo = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    let {title, description, persona, group} = e.target as HTMLFormElement;
+  const handleAddTodo = useCallback(() => {
+    console.log(title);
+    console.log(description);
+    console.log(persona);
+    console.log(group);
     
-    const titleValue: string = title.value;
-    const descriptionValue: string = description.value;
-    const personaValue: string = persona.value;
-    const groupValue: number = parseInt(group.value);   
-    
-    if(titleValue==='' || descriptionValue=='' || personaValue==='' || !groupValue){
+    if(title==='' || description=='' || persona==='' || !group){
       console.error("all feilds are required")
       alert("All Feilds are Required")
     }else{      
-      createTask(titleValue, descriptionValue, personaValue, groupValue);
+      createTask(title, description, persona, group);
       setshowaddtodo(false)
+      setdescription('');
+      settitle('')
+      setgroup(NaN);
+      setpersona('')
       setrender(prev=>!prev)
     }
-  },[])
+  },[title, description, persona, group])
 
   return (
     <main className="min-h-screen w-full bg-white">
@@ -61,13 +67,28 @@ export default function Home() {
               onSubmit={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                handleAddTodo(e)
+                handleAddTodo()
               }}  
             >
-              <input type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Title" name="title"/>
-              <input type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Description" name="description"/>
-              <input type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Persona" name="persona"/>
-              <input type="number" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Group" name="group"/>
+              <input
+                value={title}
+                onChange={(e) => settitle(e.target.value)}
+                type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Title" name="title"/>
+              <input
+                value={description}
+                onChange={(e) => setdescription(e.target.value)}
+                type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Description" name="description"/>
+              <input 
+                value={persona}
+                onChange={(e) => setpersona(e.target.value)}
+                type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Persona" name="persona"/>
+              <input 
+                value={group}
+                onChange={(e) => {
+                  const value1:number = parseInt(e.target.value)
+                  setgroup(value1)
+                }}
+                type="number" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Group" name="group"/>
               <button className="bg-blue-1 text-white w-1/2 py-2 text-bold text-xl">
                 Submit
               </button>

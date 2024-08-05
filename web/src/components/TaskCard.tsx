@@ -3,21 +3,18 @@ import { updateTask, deleteTask} from '@/modules/taskManager';
 
 const TaskCard = ({task:{ title, description, id, persona, completed, group}, parent, handleTaskDone, rerender } : {task: { title: string, description: string, id: number, persona: string, completed: boolean, group: number}, parent: string, handleTaskDone:(title: string)=>void, rerender:()=>void }) => {
   const [showupdatetask, setshowupdatetask] = useState<boolean>(false);
+  const [title1, settitle] = useState<string | ''>('');
   
-  const handleEdit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    let {title, description, persona, group} = e.target as HTMLFormElement;
-    
-    const titleValue: string = title.value;
-    
-    if(titleValue===''){
+  const handleEdit = useCallback(() => {        
+    if(title1===''){
       console.error("all feilds are required")
       alert("All Feilds are Required")
     }else{      
-      updateTask(id, {title: titleValue});
+      updateTask(id, {title: title1});
       setshowupdatetask(false)
       rerender()
     }
-  },[id, rerender])
+  },[id, rerender, title1])
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
@@ -46,10 +43,13 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
               onSubmit={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                handleEdit(e)
+                handleEdit()
               }}  
             >
-              <input type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Title" name="title"/>
+              <input 
+                value={title1}
+                onChange={(e) => settitle(e.target.value)}
+                type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Title" name="title"/>
               <button className="bg-blue-1 text-white w-1/2 py-2 text-bold text-xl">
                 Submit
               </button>
@@ -62,7 +62,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
         { (parent==='To-Do' || parent==='In Progress') &&
             <button className={`
             text-white pr-3 pl-2 gap-1 py-[3px] font-normal flex justify-between
-              ${parent==='To-Do' ? 'bg-gray-1 text-gray-3 border-2 border-gray-2' : parent==='In Progress'? 'bg-blue-1 border-2 border-blue-1 text-white' : 'bg-[#52C41A]'} 
+              ${parent==='To-Do' ? 'bg-gray-1 text-gray-950 border-2 border-gray-2' : parent==='In Progress'? 'bg-blue-1 border-2 border-blue-1 text-white' : 'bg-[#52C41A]'} 
             `}
               disabled={parent==='To-Do'}  
               onClick={(e) => {      
@@ -71,7 +71,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
                 }        
               }}
             >
-              <span class="material-symbols-outlined">
+              <span className="material-symbols-outlined">
                 check
               </span>
               Done
@@ -89,7 +89,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
             setshowupdatetask(true)
           }}
         >
-          <span class="material-symbols-outlined">
+          <span className="material-symbols-outlined">
             edit_square
           </span>
         </button>
@@ -99,7 +99,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
             handleDelete()
           }}
         >
-          <span class="material-symbols-outlined">
+          <span className="material-symbols-outlined">
             delete
           </span>
         </button>
