@@ -13,11 +13,11 @@ export function getActiveTasks(): Task[] {
   let activeTasks: Task[] = [];
   if(activeTasks.length==0){
     const nonCompletedTasks: Task[] = tasks.filter((task) => task.completed!==true)
-    for(let i=0; i<nonCompletedTasks.length; i++){
-      if(nonCompletedTasks[i].group === nonCompletedTasks[0].group){
-        activeTasks = [...activeTasks, nonCompletedTasks[i]]
+    for (const task of nonCompletedTasks) {
+      if (task.group === nonCompletedTasks[0].group) {
+        activeTasks = [...activeTasks, task];
       }
-    }  
+    }
   }
   return activeTasks;
 }
@@ -50,7 +50,6 @@ export function completeTask(taskTitle: string): void {
       return;
     }
   })
-  return;
 }
 
 export function createTask(title: string, description: string, persona: string, group: number): void {
@@ -64,12 +63,10 @@ export function createTask(title: string, description: string, persona: string, 
   const task: Task = new Task(newid, title, description, persona, group, false);
   tasks = [...tasks, task];
   tasks.sort((a, b) => a.group - b.group);
-  return;
 }
 
 export function updateTask(taskId: number, taskDetails:{title: string}): void {
-  let isIdtrue: boolean = false;
-  isIdtrue = tasks.some((task) => {
+  tasks.some((task) => {
       if(task?.id === taskId){
         if(taskDetails.title!==''){
           task.title =  taskDetails.title
@@ -82,5 +79,4 @@ export function updateTask(taskId: number, taskDetails:{title: string}): void {
 
 export function deleteTask(taskId: number): void {
   tasks = tasks.filter((task) => task?.id!==taskId)
-  return;
 }
