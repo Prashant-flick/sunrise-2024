@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [render, setRender] = useState<boolean>(false);
   const [showaddtodo, setShowaddtodo] = useState<boolean>(false);
-  const [title , settitle] = useState<string>('')
+  const [title , setTitle] = useState<string>('')
   const [description , setDescription] = useState<string>('')
   const [persona , setPersona] = useState<string>('')
   const [group , setGroup] = useState<number>(0)
@@ -34,7 +34,7 @@ export default function Home() {
       createTask(title, description, persona, group);
       setShowaddtodo(false)
       setDescription('');
-      settitle('')
+      setTitle('')
       setGroup(NaN);
       setPersona('')
       setRender(prev=>!prev)
@@ -66,7 +66,7 @@ export default function Home() {
             >
               <input
                 value={title}
-                onChange={(e) => settitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
                 type="text" className="w-full h-12 pl-3 border-2 border-gray-2" placeholder="Title" name="title"/>
               <input
                 value={description}

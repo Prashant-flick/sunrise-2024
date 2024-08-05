@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { updateTask, deleteTask} from '@/modules/taskManager';
 
 const TaskCard = ({task:{ title, description, id, persona, completed, group}, parent, handleTaskDone, rerender } : {task: { title: string, description: string, id: number, persona: string, completed: boolean, group: number}, parent: string, handleTaskDone:(title: string)=>void, rerender:()=>void }) => {
-  const [showUpdateTask, setshowUpdateTask] = useState<boolean>(false);
+  const [showUpdateTask, setShowUpdateTask] = useState<boolean>(false);
   const [title1, setTitle1] = useState<string>('');
   
   const handleEdit = useCallback(() => {        
@@ -11,7 +11,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
       alert("All Feilds are Required")
     }else{      
       updateTask(id, {title: title1});
-      setshowUpdateTask(false)
+      setShowUpdateTask(false)
       rerender()
     }
   },[id, rerender, title1])
@@ -44,7 +44,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  setshowUpdateTask(false)
+                  setShowUpdateTask(false)
                 }}
               >
                 <span className="material-symbols-outlined">close</span>
@@ -84,7 +84,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
                 handleTaskDone(title)
               }}
             >
-              <span className="material-symbols-outlined">check</span>
+            <span className="material-symbols-outlined">check</span>
               Done
             </button>
           }
@@ -97,7 +97,7 @@ const TaskCard = ({task:{ title, description, id, persona, completed, group}, pa
         <button
           onClick={(e) => {
             e.preventDefault()
-            setshowUpdateTask(true)
+            setShowUpdateTask(true)
           }}
         >
           <span className="material-symbols-outlined">edit_square</span>

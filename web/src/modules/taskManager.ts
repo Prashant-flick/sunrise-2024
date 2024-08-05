@@ -47,7 +47,6 @@ export function completeTask(taskTitle: string): void {
   tasks.map((task) => {
     if(task?.title === taskTitle){
       task.completed=true;
-      return;
     }
   })
 }
